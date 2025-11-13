@@ -3,7 +3,7 @@ name: Create Standard Change Request in ServiceNow
 on:
   push:
     branches:
-      - main   # or whatever branch you want to trigger on
+      - main   # Change this to your deployment branch if needed
 
 jobs:
   create-servicenow-change:
@@ -44,10 +44,10 @@ jobs:
               "autoCloseChange": true,
               "attributes": {
                 "short_description": "Auto Standard Change for GitHub Commit",
-                "description": "This change was automatically created for a GitHub commit",
+                "description": "This change was automatically created for a GitHub commit. Repository: ${{ steps.commit_info.outputs.repo }} Branch: ${{ steps.commit_info.outputs.branch }} Commit: ${{ steps.commit_info.outputs.sha }} Author: ${{ steps.commit_info.outputs.author }} Message: ${{ steps.commit_info.outputs.message }}",
                 "type": "Standard",
                 "change_model": "Standard",
-                "assignment_group": "Change Management",        # Replace with actual assignment group name or sys_id
+                "assignment_group": "Change Management",  # Replace with actual assignment group name or sys_id
                 "implementation_plan": "Automated deployment triggered via CI pipeline.",
                 "backout_plan": "Rollback via GitHub revert commit if deployment fails.",
                 "test_plan": "Automated CI validation test plan."
