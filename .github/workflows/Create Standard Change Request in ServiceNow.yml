@@ -44,12 +44,7 @@ jobs:
               "autoCloseChange": true,
               "attributes": {
                 "short_description": "Auto Standard Change for GitHub Commit",
-                "description": "This change was automatically created for a GitHub commit.\n
-                                Repository: ${{ steps.commit_info.outputs.repo }}\n
-                                Branch: ${{ steps.commit_info.outputs.branch }}\n
-                                Commit: ${{ steps.commit_info.outputs.sha }}\n
-                                Author: ${{ steps.commit_info.outputs.author }}\n
-                                Message: ${{ steps.commit_info.outputs.message }}",
+                "description": "This change was automatically created for a GitHub commit",
                 "type": "Standard",
                 "change_model": "Standard",
                 "assignment_group": "Change Management",        # Replace with actual assignment group name or sys_id
