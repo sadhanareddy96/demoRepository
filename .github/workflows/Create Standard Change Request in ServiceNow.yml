@@ -1,0 +1,67 @@
+name: Create Standard Change Request in ServiceNow
+
+on:
+  push:
+    branches:
+      - main   # or whatever branch you want to trigger on
+
+jobs:
+  create-servicenow-change:
+    name: Create ServiceNow Standard Change
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get commit info
+        id: commit_info
+        run: |
+          echo "message=$(git log -1 --pretty=format:'%s')" >> $GITHUB_OUTPUT
+          echo "author=$(git log -1 --pretty=format:'%an')" >> $GITHUB_OUTPUT
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "repo=${GITHUB_REPOSITORY}" >> $GITHUB_OUTPUT
+          echo "branch=${GITHUB_REF_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Create ServiceNow Change Request via DevOps Change Velocity
+        uses: ServiceNow/servicenow-devops-change@v6.1.0
+        with:
+          # Required integration details
+          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+
+          # Pass full GitHub context for traceability
+          context-github: ${{ toJSON(github) }}
+
+          # Name of the job for ServiceNow DevOps tracking
+          job-name: 'Create Standard Change Request'
+
+          # Change Request JSON payload
+          change-request: |
+            {
+              "setCloseCode": "true",
+              "autoCloseChange": true,
+              "attributes": {
+                "short_description": "Auto Standard Change for GitHub Commit",
+                "description": "This change was automatically created for a GitHub commit.\n
+                                Repository: ${{ steps.commit_info.outputs.repo }}\n
+                                Branch: ${{ steps.commit_info.outputs.branch }}\n
+                                Commit: ${{ steps.commit_info.outputs.sha }}\n
+                                Author: ${{ steps.commit_info.outputs.author }}\n
+                                Message: ${{ steps.commit_info.outputs.message }}",
+                "type": "Standard",
+                "change_model": "Standard",
+                "assignment_group": "Change Management",        # Replace with actual assignment group name or sys_id
+                "implementation_plan": "Automated deployment triggered via CI pipeline.",
+                "backout_plan": "Rollback via GitHub revert commit if deployment fails.",
+                "test_plan": "Automated CI validation test plan."
+              }
+            }
+
+          # Plugin behavior configurations
+          interval: '100'
+          timeout: '3600'
+          changeCreationTimeOut: '3600'
+          abortOnChangeCreationFailure: true
+          abortOnChangeStepTimeout: true
