@@ -12,12 +12,12 @@ jobs:
       - name: ServiceNow DevOps Change Attributes
         uses: ServiceNow/servicenow-devops-change@v2.0.0
         with:
-          devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
-          instance-url: ${{ secrets.SN_INSTANCE_URL_ADEVOPS2 }}
-          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID_ADEVOPS2 }}
+          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
+          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
           context-github: ${{ toJSON(github) }}
           job-name: 'Change Request Attributes'
           change-request: '{"setCloseCode":"true","attributes":{"short_description":"Automated Software Deployment"}}'
           interval: '100'
           timeout: '3600'
-          deployment-gate: '{"environment":"deploy-gates-demo","jobName":"Deploy"}'
+          deployment-gate: '{"environment":"demo_test","jobName":"Deploy"}'
