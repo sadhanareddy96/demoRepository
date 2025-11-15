@@ -38,7 +38,7 @@ jobs:
   #  name: 'Deploy'
   #  needs: ServiceNowDevOpsChange
   #  runs-on: ubuntu-latest
-  #  environment: deploy-gates-demo
+  #  environment: demo_test
   #  steps:
   #    - name: Run deployment scripts
   #      run: echo Completed Deployment
