@@ -15,11 +15,11 @@ jobs:
         uses: ServiceNow/servicenow-devops-change@v2.0.0
         with:
           # Devops Integration Token
-          devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+          devops-integration-token: '76Wfl85BIAOBP4QA9tLSYPZgH13k7tCw'
           # ServiceNow Instance URL
-          instance-url: ${{ secrets.SN_INSTANCE_URL }}
+          instance-url: 'https://pdsinfosysliveopsdemo1.service-now.com'
           # Orchestration Tool Id
-          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+          tool-id: 'bf69de6c87d5f2501d4cca65dabb3561'
           # GitHub Context
           context-github: ${{ toJSON(github) }}
           # Display Name of the Job
