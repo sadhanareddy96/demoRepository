@@ -4,19 +4,23 @@ on:
   workflow_dispatch:  # You can change this to push, pull_request, etc.
 
 jobs:
-  change:
-    name: Change Request Attributes
-    runs-on: ubuntu-latest
-    steps:
-      - name: ServiceNow DevOps Change Attributes
-        uses: ServiceNow/servicenow-devops-change@v2.0.0
-        with:
-          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
-          instance-url: ${{ secrets.SN_INSTANCE_URL }}
-          tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
-          context-github: ${{ toJSON(github) }}
-          job-name: 'Change Request Attributes'
-          change-request: '{"setCloseCode":"true","attributes":{"short_description":"Automated Software Deployment"}}'
-          interval: '100'
-          timeout: '3600'
-          deployment-gate: '{"environment":"demo_test","jobName":"Deploy"}'
+  ServiceNowDevOpsChange:
+        # jobs that must complete successfully before this job will run
+        # type of machine to run the job on
+        runs-on: ubuntu-latest
+        name: 'ServiceNow DevOps Change'
+        steps:
+          - name: ServiceNow Change
+            # Ensure to update to the latest version of the custom action, for e.g. ServiceNow/servicenow-devops-change@v5.1.0
+            uses: ServiceNow/servicenow-devops-change@VERSION
+            with:
+              # Devops Integration Token
+              devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
+              # ServiceNow Instance URL
+              instance-url: ${{ secrets.SN_INSTANCE_URL }}
+              # Orchestration Tool Id
+              tool-id: ${{ secrets.SN_ORCHESTRATION_TOOL_ID }}
+              # GitHub Context
+              context-github: ${{ toJSON(github) }}
+              # Display Name of the Job
+              job-name: 'ServiceNow DevOps Change'
